@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Image from "next/image"
 import FolderButton from "./FolderButton"
 
 interface Holding {
@@ -35,11 +36,17 @@ export default function HoldingsContent() {
               <FolderButton
                 icon={
                   holding.logo ? (
-                    <img
-                      src={holding.logo}
-                      alt={holding.name}
-                      className="w-12 h-12 md:w-16 md:h-16 object-contain rounded-full drop-shadow-[0_0_12px_rgba(57,255,20,0.5)]"
-                    />
+                    <div className="relative w-12 h-12 md:w-16 md:h-16">
+                      <Image
+                        src={holding.logo}
+                        alt={holding.name}
+                        fill
+                        sizes="(max-width: 768px) 48px, 64px"
+                        className="object-contain rounded-full drop-shadow-[0_0_12px_rgba(57,255,20,0.5)]"
+                        loading="lazy"
+                        quality={75}
+                      />
+                    </div>
                   ) : (
                     <div className="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center bg-primary/20 rounded-full border border-primary/50">
                       <span className="text-xl font-bold text-primary">{holding.name[0]}</span>
@@ -63,3 +70,4 @@ export default function HoldingsContent() {
     </div>
   )
 }
+

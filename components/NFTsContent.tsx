@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Image from "next/image"
 import FolderButton from "./FolderButton"
 
 interface NFT {
@@ -27,20 +28,32 @@ export default function NFTsContent() {
   if (loading) return <div className="p-4 text-center crt-glow">Loading NFTs...</div>
 
   return (
-    <div className="w-full h-full flex flex-col">
+    <div className="flex flex-col h-full">
       <div className="flex-1 overflow-y-auto p-4">
         <div className="grid grid-cols-3 sm:grid-cols-4 gap-6 justify-items-center">
           {nfts.map((nft) => (
             <div key={nft.id} className="flex flex-col items-center">
               <FolderButton
                 icon={
-                  <img
-                    src={nft.image || "/placeholder.svg"}
-                    alt={nft.name}
-                    className="w-12 h-12 md:w-16 md:h-16 object-cover rounded-md drop-shadow-[0_0_12px_rgba(57,255,20,0.5)]"
-                  />
+                  nft.image ? (
+                    <div className="relative w-12 h-12 md:w-16 md:h-16">
+                      <Image
+                        src={nft.image}
+                        alt={nft.name}
+                        fill
+                        sizes="(max-width: 768px) 48px, 64px"
+                        className="object-cover rounded-lg drop-shadow-[0_0_12px_rgba(57,255,20,0.5)]"
+                        loading="lazy"
+                        quality={75}
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center bg-primary/20 rounded-lg border border-primary/50">
+                      <span className="text-xl font-bold text-primary">NFT</span>
+                    </div>
+                  )
                 }
-                label={nft.name.length > 10 ? nft.name.substring(0, 10) + "..." : nft.name}
+                label={nft.name.toLowerCase()}
                 onClick={() => {
                   if (nft.url) window.open(nft.url, "_blank")
                 }}
