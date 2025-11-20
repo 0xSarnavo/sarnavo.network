@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState, useEffect } from "react"
-import { User, Trophy, Code, FileText, Share2, Wallet } from "lucide-react"
+import { User, Trophy, Code, FileText, Share2, Wallet, Image, Coins } from "lucide-react"
 import { motion } from "framer-motion"
 import FolderIcon from "./FolderIcon"
 import TerminalWindow from "./TerminalWindow"
@@ -178,16 +178,16 @@ export default function Desktop() {
     }
   }
 
-  const openWindow = (window: WindowContent) => {
-    const exists = openWindows.find((w) => w.id === window.id)
+  const openWindow = (windowContent: WindowContent) => {
+    const exists = openWindows.find((w) => w.id === windowContent.id)
     if (!exists) {
-      let windowToOpen = window
+      let windowToOpen = windowContent
       const isMobile = window.innerWidth < 768
       const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024
 
-      if (!isMobile && !isTablet && window.id === "about") {
+      if (!isMobile && !isTablet && windowContent.id === "about") {
         windowToOpen = {
-          ...window,
+          ...windowContent,
           initialSize: {
             x: 24,
             y: 60,
@@ -197,9 +197,9 @@ export default function Desktop() {
         }
       }
       setOpenWindows((prev) => [...prev, windowToOpen])
-      setFocusedWindowId(window.id)
+      setFocusedWindowId(windowContent.id)
     } else {
-      setFocusedWindowId(window.id)
+      setFocusedWindowId(windowContent.id)
     }
   }
 
@@ -218,43 +218,56 @@ export default function Desktop() {
     return 1000 + index
   }
 
-  const FolderView = ({ folderType }: { folderType: string }) => {
-    const folderItems = {
-      achievements: [
-        { id: "ach-1", label: "Achievement 1" },
-        { id: "ach-2", label: "Achievement 2" },
-        { id: "ach-3", label: "Achievement 3" },
-      ],
-      projects: [
-        { id: "proj-1", label: "Project 1" },
-        { id: "proj-2", label: "Project 2" },
-        { id: "proj-3", label: "Project 3" },
-      ],
-      logs: [
-        { id: "log-1", label: "Log Entry 1" },
-        { id: "log-2", label: "Log Entry 2" },
-        { id: "log-3", label: "Log Entry 3" },
-      ],
-    }
 
-    const items = folderItems[folderType as keyof typeof folderItems] || []
+  const FolderView = ({ folderType }: { folderType: string }) => {
+    const [items, setItems] = useState<any[]>([])
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+      const fetchItems = async () => {
+        try {
+          const endpoint = `/api/${folderType}`
+          const res = await fetch(endpoint)
+          if (res.ok) {
+            const data = await res.json()
+            setItems(data)
+          }
+        } catch (error) {
+          console.error(`Failed to fetch ${folderType}:`, error)
+        } finally {
+          setLoading(false)
+        }
+      }
+      fetchItems()
+    }, [folderType])
+
+    if (loading) {
+      return (
+        <div className="flex flex-col gap-4">
+          <div className="text-primary crt-glow">
+            {"> "} {folderType.toUpperCase()} DIRECTORY
+          </div>
+          <div className="text-foreground/60 crt-glow text-sm">Loading...</div>
+        </div>
+      )
+    }
 
     return (
       <div className="flex flex-col gap-4">
         <div className="text-primary crt-glow">
-          {">"} {folderType.toUpperCase()} DIRECTORY
+          {"> "} {folderType.toUpperCase()} DIRECTORY
         </div>
         <div className="grid grid-cols-3 gap-6">
           {items.map((item) => (
             <FolderIcon
               key={item.id}
-              label={item.label}
+              label={item.title}
               icon={FileText}
               onOpen={() =>
                 openWindow({
                   id: `${folderType}-${item.id}`,
-                  title: `${item.label}.txt`,
-                  content: `[PLACEHOLDER] Content for ${item.label}\n\nYou can add your data here later.`,
+                  title: `${item.title}.txt`,
+                  content: `${item.content}\n\n${item.date ? `Date: ${item.date}` : ""}${item.link ? `\nLink: ${item.link}` : ""}`,
                   type: "text",
                 })
               }
@@ -287,7 +300,7 @@ export default function Desktop() {
       <div className="fixed top-20 right-4 z-[997] flex flex-col gap-6">
         {minimizedWindows.includes("public-wallet") && (
           <FolderButton
-            icon={<Wallet className="w-12 h-12 md:w-16 md:h-16 text-primary" />}
+            icon={<Wallet className="h-10 w-10 xs:h-11 xs:w-11 sm:h-10 sm:w-10 md:h-11 md:w-11 lg:h-12 lg:w-12 stroke-[1.5px] text-primary drop-shadow-[0_0_12px_rgba(0,255,136,0.3)]" />}
             label="wallet"
             onClick={() => openMinimizedWindow("public-wallet")}
             title="PUBLIC ADDRESS"
@@ -295,13 +308,7 @@ export default function Desktop() {
         )}
         {minimizedWindows.includes("nfts-collection") && (
           <FolderButton
-            icon={
-              <img
-                src="/images/nft-logo.png"
-                alt="NFT"
-                className="w-12 h-12 md:w-16 md:h-16 object-contain drop-shadow-[0_0_12px_rgba(57,255,20,0.5)]"
-              />
-            }
+            icon={<Image className="h-10 w-10 xs:h-11 xs:w-11 sm:h-10 sm:w-10 md:h-11 md:w-11 lg:h-12 lg:w-12 stroke-[1.5px] text-primary drop-shadow-[0_0_12px_rgba(0,255,136,0.3)]" />}
             label="nfts"
             onClick={() => openMinimizedWindow("nfts-collection")}
             title="NFT Collection"
@@ -309,11 +316,7 @@ export default function Desktop() {
         )}
         {minimizedWindows.includes("hodl") && (
           <FolderButton
-            icon={
-              <div className="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center">
-                <span className="text-4xl md:text-5xl font-bold text-primary crt-glow">$</span>
-              </div>
-            }
+            icon={<Coins className="h-10 w-10 xs:h-11 xs:w-11 sm:h-10 sm:w-10 md:h-11 md:w-11 lg:h-12 lg:w-12 stroke-[1.5px] text-primary drop-shadow-[0_0_12px_rgba(0,255,136,0.3)]" />}
             label="hodl"
             onClick={() => openMinimizedWindow("hodl")}
             title="HODL"

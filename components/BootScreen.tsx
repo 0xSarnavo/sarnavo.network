@@ -4,11 +4,14 @@ import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 
 const BOOT_LINES = [
-  "███████╗ █████╗ ██████╗ ███╗   ██╗ █████╗ ██╗   ██╗ ██████╗",
-  "██╔════╝██╔══██╗██╔══██╗████╗  ██║██╔══██╗██║   ██║██╔═══██╗",
-  "███████╗███████║██████╔╝██╔██╗ ██║███████║██║   ██║██║   ██║",
-  "╚════██║██╔══██║██╔══██╗██║╚██╗██║██╔══██║╚██╗ ██╔╝██║   ██║",
-  "███████║██║  ██║██║  ██║██║ ╚████║██║  ██║ ╚████╔╝ ╚██████╔╝",
+  "   ███████╗ █████╗ ██████╗ ███╗   ██╗ █████╗ ██╗   ██╗ ██████╗      ",
+  "",
+  "   ██╔════╝██╔══██╗██╔══██╗████╗  ██║██╔══██╗██║   ██║██╔═══██╗     ",
+  "   ███████╗███████║██████╔╝██╔██╗ ██║███████║██║   ██║██║   ██║     ",
+  "   ╚════██║██╔══██║██╔══██╗██║╚██╗██║██╔══██║╚██╗ ██╔╝██║   ██║     ",
+  "   ███████║██║  ██║██║  ██║██║ ╚████║██║  ██║ ╚████╔╝ ╚██████╔╝     ",
+  "   ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝  ╚═══╝   ╚═════╝      ",
+  "",
   "SARNAVO BIOS v3.14.159 (C) 2025 SARNAVO Systems",
   "Initializing SARNAVO.SYS............................................[OK]",
   "Loading kernel modules...............................................[OK]",
@@ -36,7 +39,7 @@ export default function BootScreen({ onFinish }: { onFinish: () => void }) {
         setLogs((prev) => [...prev, BOOT_LINES[lineIndex]])
         lineIndex++
 
-        const delay = lineIndex < 6 ? 200 : 350
+        const delay = lineIndex < 10 ? 150 : 350
         setTimeout(addLine, delay)
       } else {
         setTimeout(() => {
@@ -85,9 +88,8 @@ export default function BootScreen({ onFinish }: { onFinish: () => void }) {
                 transition={{ duration: 0.25 }}
                 className="font-mono text-[8px] xs:text-[9px] sm:text-[10px] md:text-xs leading-tight mb-0.5 whitespace-pre"
                 style={{
-                  color:
-                    idx < 6 ? "#00ff00" : idx === 6 || idx === 15 ? "#00aaff" : "#0f0",
-                  textShadow: "0 0 6px rgba(0, 255, 0, 0.6)",
+                  color: "#00ff00",
+                  textShadow: "0 0 8px rgba(0, 255, 0, 0.7)",
                 }}
               >
                 {log}
