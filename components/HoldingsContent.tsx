@@ -38,7 +38,7 @@ export default function HoldingsContent() {
                     <img
                       src={holding.logo}
                       alt={holding.name}
-                      className="w-12 h-12 md:w-16 md:h-16 object-contain drop-shadow-[0_0_12px_rgba(57,255,20,0.5)]"
+                      className="w-12 h-12 md:w-16 md:h-16 object-contain rounded-full drop-shadow-[0_0_12px_rgba(57,255,20,0.5)]"
                     />
                   ) : (
                     <div className="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center bg-primary/20 rounded-full border border-primary/50">

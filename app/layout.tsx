@@ -14,6 +14,16 @@ export const metadata: Metadata = {
   description: "Retro CRT terminal portfolio system - Access the classified archives of 0xSarnavo",
   keywords: ["portfolio", "terminal", "CRT", "retro", "blockchain", "web3", "developer"],
   generator: "v0.app",
+  icons: {
+    icon: [
+      { url: "/favicon.png", sizes: "any" },
+      { url: "/favicon.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon.png", sizes: "16x16", type: "image/png" },
+    ],
+    apple: [
+      { url: "/favicon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
 }
 
 export default function RootLayout({
