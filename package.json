@@ -10,7 +10,8 @@
     "lib": "lib"
   },
   "scripts": {
-    "build": "next build",
+    "build": "prisma generate && next build",
+    "postinstall": "prisma generate",
     "dev": "next dev",
     "lint": "eslint .",
     "start": "next start"
