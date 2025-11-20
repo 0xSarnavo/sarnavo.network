@@ -303,6 +303,18 @@ export default function Desktop() {
       transition={{ duration: 0.5 }}
       className="relative min-h-screen bg-black p-3 md:p-6 scanlines noise crt-screen crt-vignette overflow-hidden"
     >
+      {/* Cyberpunk Background with Green Overlay */}
+      <div 
+        className="absolute inset-0 opacity-20"
+        style={{
+          backgroundImage: 'url(/cyberpunk-bg.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      />
+      <div className="absolute inset-0 bg-primary/10 mix-blend-color" />
+      
       {/* Header */}
       <header className="flex flex-row justify-between items-center gap-2 text-foreground mb-4 md:mb-8 pb-3 md:pb-4 border-b border-border">
         <div className="text-xs sm:text-sm crt-glow text-foreground">
