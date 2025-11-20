@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 
 const BOOT_LINES = [
@@ -29,9 +29,14 @@ export default function BootScreen({ onFinish }: { onFinish: () => void }) {
   const [showCursor, setShowCursor] = useState(true)
   const [fadeOut, setFadeOut] = useState(false)
   const [flicker, setFlicker] = useState(true)
+  const hasStarted = useRef(false)
 
   // Adds lines one by one
   useEffect(() => {
+    // Prevent multiple runs in React Strict Mode
+    if (hasStarted.current) return
+    hasStarted.current = true
+
     let lineIndex = 0
     let timeoutId: NodeJS.Timeout
 
