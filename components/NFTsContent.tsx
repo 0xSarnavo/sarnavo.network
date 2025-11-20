@@ -1,25 +1,11 @@
 "use client"
 
-import { useEffect, useState } from "react"
 import Image from "next/image"
 import FolderButton from "./FolderButton"
-
-interface NFT {
-  id: string
-  name: string
-  image: string | null
-  url: string | null
-}
+import { useData } from "@/contexts/DataContext"
 
 export default function NFTsContent() {
-  const [nfts, setNfts] = useState<NFT[]>([])
-
-  useEffect(() => {
-    fetch("/api/nfts")
-      .then((res) => res.json())
-      .then((data) => setNfts(data))
-      .catch((error) => console.error("Error loading NFTs:", error))
-  }, [])
+  const { nfts } = useData()
 
   return (
     <div className="flex flex-col h-full">
@@ -69,3 +55,4 @@ export default function NFTsContent() {
     </div>
   )
 }
+

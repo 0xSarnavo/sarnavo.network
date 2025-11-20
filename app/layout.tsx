@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata, Viewport } from "next"
 import "./globals.css"
 import { Providers } from "@/components/Providers"
+import { DataProvider } from "@/contexts/DataContext"
 
 export const viewport: Viewport = {
   themeColor: "#020202",
@@ -35,10 +36,12 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body className="antialiased font-mono">
         <Providers>
-          <div className="min-h-screen relative">
-            {/* main app content */}
-            <div className="relative z-10">{children}</div>
-          </div>
+          <DataProvider>
+            <div className="min-h-screen relative">
+              {/* main app content */}
+              <div className="relative z-10">{children}</div>
+            </div>
+          </DataProvider>
         </Providers>
       </body>
     </html>

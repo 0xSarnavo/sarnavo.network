@@ -1,25 +1,11 @@
 "use client"
 
-import { useEffect, useState } from "react"
 import Image from "next/image"
 import FolderButton from "./FolderButton"
-
-interface Holding {
-  id: string
-  name: string
-  logo: string | null
-  url: string | null
-}
+import { useData } from "@/contexts/DataContext"
 
 export default function HoldingsContent() {
-  const [holdings, setHoldings] = useState<Holding[]>([])
-
-  useEffect(() => {
-    fetch("/api/holdings")
-      .then((res) => res.json())
-      .then((data) => setHoldings(data))
-      .catch((error) => console.error("Error loading holdings:", error))
-  }, [])
+  const { holdings } = useData()
 
   return (
     <div className="flex flex-col h-full">
@@ -70,5 +56,4 @@ export default function HoldingsContent() {
     </div>
   )
 }
-
 
