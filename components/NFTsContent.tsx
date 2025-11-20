@@ -66,49 +66,57 @@ export default function NFTsContent() {
       {/* NFT Modal */}
       {selectedNFT && (
         <div 
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 backdrop-blur-md p-4"
           onClick={() => setSelectedNFT(null)}
         >
           <div 
-            className="relative bg-background border-2 border-primary rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto crt-glow"
+            className="relative bg-background border-2 border-primary rounded-lg p-4 sm:p-6 w-full max-w-4xl max-h-[95vh] overflow-y-auto crt-glow shadow-[0_0_50px_rgba(0,255,0,0.3)]"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Close Button */}
+            {/* Close Button - More Visible */}
             <button
               onClick={() => setSelectedNFT(null)}
-              className="absolute top-4 right-4 p-2 hover:bg-primary/20 rounded-lg transition-colors"
+              className="absolute top-2 right-2 z-10 p-3 bg-primary/30 hover:bg-primary/50 rounded-lg transition-all border border-primary shadow-lg"
+              aria-label="Close"
             >
-              <X className="w-6 h-6 text-primary" />
+              <X className="w-6 h-6 text-primary drop-shadow-[0_0_8px_rgba(0,255,0,0.8)]" />
             </button>
 
-            {/* NFT Image */}
+            {/* NFT Image - Better Scaling */}
             {selectedNFT.image && (
-              <div className="relative w-full aspect-square mb-6 rounded-lg overflow-hidden border border-primary/30">
-                <Image
-                  src={selectedNFT.image}
-                  alt={selectedNFT.name}
-                  fill
-                  className="object-contain"
-                  quality={100}
-                />
+              <div className="relative w-full mb-6 rounded-lg overflow-hidden border-2 border-primary/50 bg-black">
+                <div className="relative w-full" style={{ paddingBottom: '100%' }}>
+                  <Image
+                    src={selectedNFT.image}
+                    alt={selectedNFT.name}
+                    fill
+                    className="object-contain p-2"
+                    quality={100}
+                    priority
+                  />
+                </div>
               </div>
             )}
 
             {/* NFT Details */}
             <div className="space-y-4">
-              <h2 className="text-2xl font-bold text-primary crt-glow">{selectedNFT.name}</h2>
+              <h2 className="text-xl sm:text-2xl font-bold text-primary crt-glow pr-12">{selectedNFT.name}</h2>
               
               {selectedNFT.url && (
                 <a
                   href={selectedNFT.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-primary/20 hover:bg-primary/30 border border-primary rounded-lg transition-colors text-primary"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-primary/20 hover:bg-primary/40 border-2 border-primary rounded-lg transition-all text-primary font-semibold shadow-lg hover:shadow-[0_0_20px_rgba(0,255,0,0.5)]"
                 >
                   <ExternalLink className="w-4 h-4" />
                   View on Marketplace
                 </a>
               )}
+              
+              <p className="text-sm text-foreground/60 crt-glow">
+                Click outside or press the ✕ button to close
+              </p>
             </div>
           </div>
         </div>
