@@ -1,71 +1,122 @@
 "use client"
 
+import { useState } from "react"
 import Image from "next/image"
+import { X, ExternalLink } from "lucide-react"
 import FolderButton from "./FolderButton"
 import { useData } from "@/contexts/DataContext"
 
+interface NFT {
+  id: string
+  name: string
+  image: string | null
+  url: string | null
+}
+
 export default function NFTsContent() {
   const { nfts } = useData()
-
-  const openNFTWindow = (nft: any) => {
-    if (nft.image) {
-      // Open image in a new popup window
-      const width = 800
-      const height = 900
-      const left = (window.screen.width - width) / 2
-      const top = (window.screen.height - height) / 2
-      
-      window.open(
-        nft.image,
-        '_blank',
-        `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`
-      )
-    }
-  }
+  const [selectedNFT, setSelectedNFT] = useState<NFT | null>(null)
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex-1 overflow-y-auto p-4">
-        {nfts.length === 0 ? (
-          <div className="p-4 text-center crt-glow text-foreground/60">
-            No NFTs found
-          </div>
-        ) : (
-          <div className="grid grid-cols-3 sm:grid-cols-4 gap-6 justify-items-center">
-            {nfts.map((nft) => (
-              <div key={nft.id} className="flex flex-col items-center">
-                <FolderButton
-                  icon={
-                    nft.image ? (
-                      <div className="relative w-12 h-12 md:w-16 md:h-16">
-                        <Image
-                          src={nft.image}
-                          alt={nft.name}
-                          fill
-                          sizes="(max-width: 768px) 48px, 64px"
-                          className="object-cover rounded-lg drop-shadow-[0_0_12px_rgba(57,255,20,0.5)]"
-                          loading="lazy"
-                          quality={75}
-                        />
-                      </div>
-                    ) : (
-                      <div className="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center bg-primary/20 rounded-lg border border-primary/50">
-                        <span className="text-xl font-bold text-primary">NFT</span>
-                      </div>
-                    )
-                  }
-                  label={nft.name.toLowerCase()}
-                  onClick={() => openNFTWindow(nft)}
-                  title={nft.name}
-                />
+    <>
+      <div className="flex flex-col h-full">
+        <div className="flex-1 overflow-y-auto p-4">
+          {nfts.length === 0 ? (
+            <div className="p-4 text-center crt-glow text-foreground/60">
+              No NFTs found
+            </div>
+          ) : (
+            <div className="grid grid-cols-3 sm:grid-cols-4 gap-6 justify-items-center">
+              {nfts.map((nft) => (
+                <div key={nft.id} className="flex flex-col items-center">
+                  <FolderButton
+                    icon={
+                      nft.image ? (
+                        <div className="relative w-12 h-12 md:w-16 md:h-16">
+                          <Image
+                            src={nft.image}
+                            alt={nft.name}
+                            fill
+                            sizes="(max-width: 768px) 48px, 64px"
+                            className="object-cover rounded-lg drop-shadow-[0_0_12px_rgba(57,255,20,0.5)]"
+                            loading="lazy"
+                            quality={75}
+                          />
+                        </div>
+                      ) : (
+                        <div className="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center bg-primary/20 rounded-lg border border-primary/50">
+                          <span className="text-xl font-bold text-primary">NFT</span>
+                        </div>
+                      )
+                    }
+                    label={nft.name.toLowerCase()}
+                    onClick={() => setSelectedNFT(nft)}
+                    title={nft.name}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+        <div className="border-t border-border p-2 text-center">
+          <p className="text-[9px] text-foreground/60 crt-glow">NFT Collection • {nfts.length} Items</p>
+        </div>
+      </div>
+
+      {/* NFT Detail Overlay - Inside Window */}
+      {selectedNFT && (
+        <div 
+          className="absolute inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-md p-2 sm:p-4"
+          onClick={() => setSelectedNFT(null)}
+        >
+          <div 
+            className="relative bg-background border-2 border-primary rounded-lg p-3 sm:p-4 w-full max-w-md sm:max-w-lg max-h-full overflow-y-auto crt-glow shadow-[0_0_30px_rgba(0,255,0,0.4)]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setSelectedNFT(null)}
+              className="absolute top-1 right-1 z-10 p-2 bg-primary/30 hover:bg-primary/50 rounded-lg transition-all border border-primary"
+              aria-label="Close"
+            >
+              <X className="w-5 h-5 text-primary drop-shadow-[0_0_8px_rgba(0,255,0,0.8)]" />
+            </button>
+
+            {/* NFT Image */}
+            {selectedNFT.image && (
+              <div className="relative w-full mb-3 rounded-lg overflow-hidden border-2 border-primary/50 bg-black">
+                <div className="relative w-full" style={{ paddingBottom: '100%' }}>
+                  <Image
+                    src={selectedNFT.image}
+                    alt={selectedNFT.name}
+                    fill
+                    className="object-contain p-1"
+                    quality={90}
+                    priority
+                  />
+                </div>
               </div>
-            ))}
+            )}
+
+            {/* NFT Details */}
+            <div className="space-y-2">
+              <h2 className="text-base sm:text-lg font-bold text-primary crt-glow pr-8 line-clamp-2">{selectedNFT.name}</h2>
+              
+              {selectedNFT.url && (
+                <a
+                  href={selectedNFT.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-3 py-1.5 text-sm bg-primary/20 hover:bg-primary/40 border border-primary rounded-lg transition-all text-primary font-semibold"
+                >
+                  <ExternalLink className="w-3 h-3" />
+                  View on Marketplace
+                </a>
+              )}
+            </div>
           </div>
-        )}
-      </div>
-      <div className="border-t border-border p-2 text-center">
-        <p className="text-[9px] text-foreground/60 crt-glow">NFT Collection • {nfts.length} Items</p>
-      </div>
-    </div>
+        </div>
+      )}
+    </>
   )
 }
