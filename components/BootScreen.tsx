@@ -33,6 +33,7 @@ export default function BootScreen({ onFinish }: { onFinish: () => void }) {
   // Adds lines one by one
   useEffect(() => {
     let lineIndex = 0
+    let timeoutId: NodeJS.Timeout
 
     const addLine = () => {
       if (lineIndex < BOOT_LINES.length) {
@@ -40,17 +41,23 @@ export default function BootScreen({ onFinish }: { onFinish: () => void }) {
         lineIndex++
 
         const delay = lineIndex < 10 ? 150 : 350
-        setTimeout(addLine, delay)
+        timeoutId = setTimeout(addLine, delay)
       } else {
-        setTimeout(() => {
+        timeoutId = setTimeout(() => {
           setShowCursor(false)
           setFadeOut(true)
-          setTimeout(onFinish, 1000)
+          timeoutId = setTimeout(onFinish, 1000)
         }, 1200)
       }
     }
 
-    addLine()
+    // Small delay before starting to ensure proper initialization
+    timeoutId = setTimeout(addLine, 100)
+
+    // Cleanup function to prevent multiple runs
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId)
+    }
   }, [onFinish])
 
   // Soft flicker pulse effect
