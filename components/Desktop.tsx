@@ -185,14 +185,20 @@ export default function Desktop() {
       const isMobile = window.innerWidth < 768
       const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024
 
-      if (!isMobile && !isTablet && windowContent.id === "about") {
+      // Make all windows bigger and position them to avoid overlapping icons
+      if (!isMobile && !isTablet) {
+        // Calculate available space (leave room for right-side icons)
+        const iconSpace = 120 // Space for right-side icons
+        const availableWidth = window.innerWidth - iconSpace - 48
+        const availableHeight = window.innerHeight - 120
+
         windowToOpen = {
           ...windowContent,
           initialSize: {
             x: 24,
             y: 60,
-            width: window.innerWidth - 48,
-            height: window.innerHeight - 120,
+            width: Math.min(availableWidth, 1200), // Max 1200px wide
+            height: Math.min(availableHeight, 800), // Max 800px tall
           },
         }
       }
