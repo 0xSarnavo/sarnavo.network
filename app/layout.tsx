@@ -12,7 +12,7 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: "SARNAVO.SYS - Terminal Portfolio",
+  title: "SARNAVO.SYS",
   description: "Retro CRT terminal portfolio system - Access the classified archives of 0xSarnavo",
   keywords: ["portfolio", "terminal", "CRT", "retro", "blockchain", "web3", "developer"],
   generator: "v0.app",

@@ -219,6 +219,15 @@ export default function Desktop() {
     }
   }
 
+  const toggleWindow = (windowContent: WindowContent) => {
+    const exists = openWindows.find((w) => w.id === windowContent.id)
+    if (exists) {
+      closeWindow(windowContent.id)
+    } else {
+      openWindow(windowContent)
+    }
+  }
+
   const getWindowZIndex = (windowId: string) => {
     if (windowId === focusedWindowId) {
       return 1000 + openWindows.length
@@ -344,7 +353,7 @@ export default function Desktop() {
             label="About"
             icon={User}
             onOpen={() =>
-              openWindow({
+              toggleWindow({
                 id: "about",
                 title: "about.sys",
                 content: <AboutContent />,
@@ -356,7 +365,7 @@ export default function Desktop() {
             label="Achievements"
             icon={Trophy}
             onOpen={() =>
-              openWindow({
+              toggleWindow({
                 id: "achievements-folder",
                 title: "achievements/",
                 content: <FolderView folderType="achievements" />,
@@ -368,7 +377,7 @@ export default function Desktop() {
             label="Projects"
             icon={Code}
             onOpen={() =>
-              openWindow({
+              toggleWindow({
                 id: "projects-folder",
                 title: "projects/",
                 content: <FolderView folderType="projects" />,
@@ -380,7 +389,7 @@ export default function Desktop() {
             label="Logs"
             icon={FileText}
             onOpen={() =>
-              openWindow({
+              toggleWindow({
                 id: "logs-folder",
                 title: "logs/",
                 content: <FolderView folderType="logs" />,
@@ -392,7 +401,7 @@ export default function Desktop() {
             label="Connect"
             icon={Share2}
             onOpen={() =>
-              openWindow({
+              toggleWindow({
                 id: "connect",
                 title: "connect.sys",
                 content: <ConnectContent />,
