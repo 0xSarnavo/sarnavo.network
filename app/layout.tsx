@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from "next"
 import "./globals.css"
 import { Providers } from "@/components/Providers"
 import { DataProvider } from "@/contexts/DataContext"
+import { Analytics } from "@vercel/analytics/react"
 
 export const viewport: Viewport = {
   themeColor: "#020202",
@@ -43,6 +44,7 @@ export default function RootLayout({
             </div>
           </DataProvider>
         </Providers>
+        <Analytics />
       </body>
     </html>
   )

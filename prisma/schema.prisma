@@ -97,21 +97,45 @@ model Achievement {
 }
 
 model Project {
-  id        String   @id @default(cuid())
-  title     String
-  content   String
-  link      String?
-  order     Int      @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(cuid())
+  title       String
+  description String   // Short description
+  content     String   // Full markdown content
+  image       String?  // Featured image URL
+  images      String?  // JSON array of additional images
+  techStack   String?  // JSON array of technologies
+  link        String?  // Live demo link
+  github      String?  // GitHub repo link
+  metrics     String?  // JSON object for key metrics
+  featured    Boolean  @default(false)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Log {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String?  @unique // URL-friendly slug
+  excerpt     String?  // Short preview
+  content     String   // Full markdown content
+  image       String?  // Featured image URL
+  tags        String?  // JSON array of tags
+  published   Boolean  @default(true)
+  featured    Boolean  @default(false)
+  readTime    Int?     // Estimated read time in minutes
+  date        String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ContactMessage {
   id        String   @id @default(cuid())
-  title     String
-  content   String
-  date      String?
-  order     Int      @default(0)
+  name      String
+  email     String
+  subject   String?
+  message   String
+  read      Boolean  @default(false)
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }

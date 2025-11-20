@@ -187,18 +187,21 @@ export default function Desktop() {
 
       // Make all windows bigger and position them to avoid overlapping icons
       if (!isMobile && !isTablet) {
-        // Calculate available space (leave room for right-side icons)
-        const iconSpace = 120 // Space for right-side icons
-        const availableWidth = window.innerWidth - iconSpace - 48
-        const availableHeight = window.innerHeight - 120
+        // Calculate available space
+        const rightIconSpace = 140 // Space for right-side icons (wallet, nfts, hodl)
+        const bottomDockSpace = 80 // Space for bottom dock
+        const topHeaderSpace = 80 // Space for top header
+        
+        const availableWidth = window.innerWidth - rightIconSpace - 48
+        const availableHeight = window.innerHeight - topHeaderSpace - bottomDockSpace
 
         windowToOpen = {
           ...windowContent,
           initialSize: {
             x: 24,
-            y: 60,
+            y: topHeaderSpace,
             width: Math.min(availableWidth, 1200), // Max 1200px wide
-            height: Math.min(availableHeight, 800), // Max 800px tall
+            height: Math.min(availableHeight, 700), // Max 700px tall
           },
         }
       }
