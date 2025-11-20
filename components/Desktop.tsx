@@ -309,8 +309,9 @@ export default function Desktop() {
         style={{
           backgroundImage: 'url(/cyberpunk-animated.gif)',
           backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundPosition: 'center center',
           backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'fixed',
           filter: 'hue-rotate(90deg) saturate(0.8)',
         }}
       />
