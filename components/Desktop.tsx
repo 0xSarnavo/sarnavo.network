@@ -303,17 +303,19 @@ export default function Desktop() {
       transition={{ duration: 0.5 }}
       className="relative min-h-screen bg-black p-3 md:p-6 scanlines noise crt-screen crt-vignette overflow-hidden"
     >
-      {/* Cyberpunk Animated Background with Green Overlay */}
+      {/* Cyberpunk Animated Background with Strong Green Overlay */}
       <div 
-        className="absolute inset-0 opacity-20"
+        className="absolute inset-0 opacity-30"
         style={{
           backgroundImage: 'url(/cyberpunk-animated.gif)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
+          filter: 'hue-rotate(90deg) saturate(0.8)',
         }}
       />
-      <div className="absolute inset-0 bg-primary/10 mix-blend-color" />
+      <div className="absolute inset-0 bg-primary/20 mix-blend-color" />
+      <div className="absolute inset-0 bg-green-500/10" />
       
       {/* Header */}
       <header className="flex flex-row justify-between items-center gap-2 text-foreground mb-4 md:mb-8 pb-3 md:pb-4 border-b border-border">
@@ -358,7 +360,7 @@ export default function Desktop() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="fixed bottom-20 sm:bottom-24 left-1/2 -translate-x-1/2 z-[998] bg-background/80 backdrop-blur-sm border border-border rounded-2xl sm:rounded-xl md:rounded-lg px-3 sm:px-4 py-3 sm:py-3"
+        className="fixed bottom-20 sm:bottom-24 left-1/2 -translate-x-1/2 z-[998] bg-black/30 backdrop-blur-xl border border-primary/30 rounded-2xl sm:rounded-xl md:rounded-lg px-3 sm:px-4 py-3 sm:py-3 shadow-[0_8px_32px_0_rgba(0,255,0,0.1)] hover:shadow-[0_8px_32px_0_rgba(0,255,0,0.2)] transition-all"
       >
         <div className="flex items-center justify-center gap-3 sm:gap-3 md:gap-6">
           <FolderIcon
