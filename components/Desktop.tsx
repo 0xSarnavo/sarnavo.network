@@ -303,11 +303,11 @@ export default function Desktop() {
       transition={{ duration: 0.5 }}
       className="relative min-h-screen bg-black p-3 md:p-6 scanlines noise crt-screen crt-vignette overflow-hidden"
     >
-      {/* Cyberpunk Background with Green Overlay */}
+      {/* Cyberpunk Animated Background with Green Overlay */}
       <div 
         className="absolute inset-0 opacity-20"
         style={{
-          backgroundImage: 'url(/cyberpunk-bg.png)',
+          backgroundImage: 'url(/cyberpunk-animated.gif)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
